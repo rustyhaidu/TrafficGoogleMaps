@@ -1,18 +1,20 @@
-package com.example.intersectiesemaforizata;
+package com.example.intersectiesemaforizata.backup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.intersectiesemaforizata.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,7 +22,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONException;
@@ -37,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity2 extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap map;
     private LatLng mOrigin;
     private LatLng mDestination;
@@ -49,7 +50,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         mOrigin = new LatLng(44.4461241, 26.1274945);
 
@@ -115,7 +116,39 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Semafor Vitan")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
 
+        map.addMarker(new MarkerOptions()
+                .position(semafoare.get(1).getCoordonite())
+                .title("Strada Sergent Ion 1")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
+        map.addMarker(new MarkerOptions()
+                .position(semafoare.get(2).getCoordonite())
+                .title("Strada Sergent Ion 2")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
+        map.addMarker(new MarkerOptions()
+                .position(semafoare.get(3).getCoordonite())
+                .title("Splaiul Unirii 1")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
+        map.addMarker(new MarkerOptions()
+                .position(semafoare.get(4).getCoordonite())
+                .title("Splaiul Unirii 2")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
         new TaskDirectionRequest().execute(getRequestedUrl(mOrigin, spitalAleator.getCoordonate()));
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.setDuration(3000);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float v = valueAnimator.getAnimatedFraction();
+                double lng = v * spitalAleator.getCoordonate().longitude + (1 - v) * mOrigin.longitude;
+                double lat = v * spitalAleator.getCoordonate().latitude + (1 - v)* mOrigin.latitude;
+            }
+        });
 
     }
 

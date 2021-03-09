@@ -37,4 +37,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.maps.android:maps-utils-ktx:2.3.0'
+
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-scalars
+    implementation group: 'com.squareup.retrofit2', name: 'converter-scalars', version: '2.3.0'
 }
