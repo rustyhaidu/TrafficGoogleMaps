@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">IntersectieSemaforizata</string>
+    <string name="enter_place">Enter Place</string>
+    <string name="go">GO</string>
 </resources>
