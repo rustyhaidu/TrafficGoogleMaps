@@ -82,6 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // ---------
     IGoogleApi mService;
 
+    long startMillis = System.currentTimeMillis();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,6 +290,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
                             valueAnimator.setDuration(3000);
                             valueAnimator.setInterpolator(new LinearInterpolator());
+
+
                             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -297,9 +301,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     LatLng newPos = new LatLng(lat, lng);
 
                                     // Add Toast to see if the car is in near a Semaphor
-                                    if(semafoare.get(4).getCoordonite().latitude == lat
+                                    /*if(semafoare.get(4).getCoordonite().latitude == lat
                                         && semafoare.get(4).getCoordonite().longitude == lng){
                                         Toast.makeText(MapsActivity.this, "All Lights Are Green", Toast.LENGTH_SHORT).show();
+                                    }*/
+
+                                    long crtMillis = System.currentTimeMillis();
+
+                                    if (crtMillis - startMillis >= 5000) {
+                                        startMillis = startMillis + 5000;
+                                        Toast.makeText(MapsActivity.this, "LNG: " + String.valueOf(lng - semafoare.get(2).getCoordonite().longitude).substring(0, 8)
+                                                + " LAT: " + String.valueOf(lat - semafoare.get(2).getCoordonite().latitude).substring(0, 8), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    if (Math.abs(lng - semafoare.get(2).getCoordonite().longitude) <= 0.001
+                                            && Math.abs(lat - semafoare.get(2).getCoordonite().latitude) <= 0.001) {
+                                        Toast.makeText(MapsActivity.this, "ALL LIGHTS GREEN", Toast.LENGTH_SHORT).show();
+                                    }
+                                    if (Math.abs(lng - semafoare.get(3).getCoordonite().longitude) <= 0.001
+                                            && Math.abs(lat - semafoare.get(3).getCoordonite().latitude) <= 0.001) {
+                                        Toast.makeText(MapsActivity.this, "ALL LIGHTS GREEN", Toast.LENGTH_SHORT).show();
                                     }
 
                                     marker.setPosition(newPos);
