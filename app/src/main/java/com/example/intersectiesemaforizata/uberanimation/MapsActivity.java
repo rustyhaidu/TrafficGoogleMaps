@@ -119,7 +119,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setBuildingsEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        LatLng bucharest = new LatLng(44.4444282, 26.1279446);
+        // LatLng bucharest = new LatLng(44.4444282, 26.1279446);
+        // 44.405157,26.142046
+        LatLng bucharest = new LatLng(44.405157, 26.142046);
 
         // ------------ Add Markers from backup package ---------------
         List<Spital> spitale = new ArrayList<>();
@@ -152,42 +154,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Google map setup 1.0
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+       /* if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
-        }
+        }*/
 
-        mMap.setMyLocationEnabled(true);
+        //mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         // Show marker on the screen and adjust the zoom level
         //map.addMarker(new MarkerOptions().position(mOrigin).title("Origin"));
         mMap.addMarker(new MarkerOptions().position(mDestination).title(spitalAleator.getNumeSpital()));
+
         //map.moveCamera(CameraUpdateFactory.newLatLngZoom(mOrigin, 8f));
 
-        mMap.addMarker(new MarkerOptions()
+        Marker semaforVitan1 = mMap.addMarker(new MarkerOptions()
                 .position(semafoare.get(0).getCoordonite())
                 .title("Semafor Vitan")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
 
-        mMap.addMarker(new MarkerOptions()
+
+        Marker stradaSergentIon1 = mMap.addMarker(new MarkerOptions()
                 .position(semafoare.get(1).getCoordonite())
                 .title("Strada Sergent Ion 1")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
 
-        mMap.addMarker(new MarkerOptions()
+        Marker stradaSergentIon2 = mMap.addMarker(new MarkerOptions()
                 .position(semafoare.get(2).getCoordonite())
                 .title("Strada Sergent Ion 2")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
 
-        mMap.addMarker(new MarkerOptions()
+        final Marker[] splaiulUnirii1 = {mMap.addMarker(new MarkerOptions()
                 .position(semafoare.get(3).getCoordonite())
                 .title("Splaiul Unirii 1")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)))};
 
-        mMap.addMarker(new MarkerOptions()
+        /*final Marker[] splaiulUnirii2 = {mMap.addMarker(new MarkerOptions()
                 .position(semafoare.get(4).getCoordonite())
                 .title("Splaiul Unirii 2")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)))};*/
 
 
         // -----------------------------
@@ -291,7 +298,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             valueAnimator.setDuration(3000);
                             valueAnimator.setInterpolator(new LinearInterpolator());
 
-
+                            final boolean[] isSplaiul1 = {false};
+                            final boolean[] isSplaiul2 = {false};
                             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -299,6 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     lng = v * endPosition.longitude + (1 - v) * startPosition.longitude;
                                     lat = v * endPosition.latitude + (1 - v) * startPosition.latitude;
                                     LatLng newPos = new LatLng(lat, lng);
+
 
                                     // Add Toast to see if the car is in near a Semaphor
                                     /*if(semafoare.get(4).getCoordonite().latitude == lat
@@ -314,14 +323,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 + " LAT: " + String.valueOf(lat - semafoare.get(2).getCoordonite().latitude).substring(0, 8), Toast.LENGTH_SHORT).show();
                                     }
 
-                                    if (Math.abs(lng - semafoare.get(2).getCoordonite().longitude) <= 0.001
-                                            && Math.abs(lat - semafoare.get(2).getCoordonite().latitude) <= 0.001) {
-                                        Toast.makeText(MapsActivity.this, "ALL LIGHTS GREEN", Toast.LENGTH_SHORT).show();
-                                    }
-                                    if (Math.abs(lng - semafoare.get(3).getCoordonite().longitude) <= 0.001
+                                    if (Math.abs(lng - semafoare.get(3).getCoordonite().longitude) <= 0.0001
                                             && Math.abs(lat - semafoare.get(3).getCoordonite().latitude) <= 0.001) {
                                         Toast.makeText(MapsActivity.this, "ALL LIGHTS GREEN", Toast.LENGTH_SHORT).show();
+
+                                        splaiulUnirii1[0].remove();
+                                        splaiulUnirii1[0] = mMap.addMarker(new MarkerOptions()
+                                                .position(semafoare.get(3).getCoordonite())
+                                                .title("Splaiul Unirii 1")
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_1green_light)));
+
+                                        isSplaiul1[0] = true;
+                                    } else {
+                                        if (isSplaiul1[0] = true) {
+                                            splaiulUnirii1[0].remove();
+                                            splaiulUnirii1[0] = mMap.addMarker(new MarkerOptions()
+                                                    .position(semafoare.get(3).getCoordonite())
+                                                    .title("Splaiul Unirii 1")
+                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
+                                            isSplaiul1[0] = false;
+                                        }
+
                                     }
+
+                                    /*if (Math.abs(lng - semafoare.get(3).getCoordonite().longitude) <= 0.0001
+                                            && Math.abs(lat - semafoare.get(3).getCoordonite().latitude) <= 0.0001) {
+                                        Toast.makeText(MapsActivity.this, "ALL LIGHTS GREEN", Toast.LENGTH_SHORT).show();
+
+                                        splaiulUnirii2[0].remove();
+                                        splaiulUnirii2[0] = mMap.addMarker(new MarkerOptions()
+                                                .position(semafoare.get(3).getCoordonite())
+                                                .title("Splaiul Unirii 1")
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_1green_light)));
+
+                                        isSplaiul2[0] = true;
+                                    }
+
+                                    if (Math.abs(lng - semafoare.get(3).getCoordonite().longitude) > 0.0001
+                                            && Math.abs(lat - semafoare.get(3).getCoordonite().latitude) > 0.0001) {
+                                        Toast.makeText(MapsActivity.this, "ALL LIGHTS RED", Toast.LENGTH_SHORT).show();
+
+                                        splaiulUnirii2[0].remove();
+                                        splaiulUnirii2[0] = mMap.addMarker(new MarkerOptions()
+                                                .position(semafoare.get(3).getCoordonite())
+                                                .title("Splaiul Unirii 1")
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_traffic)));
+
+                                        isSplaiul2[0] = false;
+                                    }*/
 
                                     marker.setPosition(newPos);
                                     marker.setAnchor(0.5f, 0.5f);
